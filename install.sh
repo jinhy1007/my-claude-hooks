@@ -55,23 +55,27 @@ for name in sorted(os.listdir(target)):
         continue
     with open(meta_path) as f:
         meta = json.load(f)
-    script = meta["script"]
-    path = f'"$HOME/.claude/my-claude-hooks/{name}/{script}"'
-    if script.endswith(".py"):
-        cmd = f"python3 {path}"
-    elif script.endswith(".sh"):
-        cmd = f"bash {path}"
-    else:
-        os.chmod(os.path.join(target, name, script), 0o755)
-        cmd = path
-    entry = {"type": "command", "command": cmd}
-    for key in ("timeout", "statusMessage"):
-        if key in meta:
-            entry[key] = meta[key]
-    group = {"hooks": [entry]}
-    if meta.get("matcher"):
-        group["matcher"] = meta["matcher"]
-    hooks_cfg.setdefault(meta["event"], []).append(group)
+    # hook.json 可以只设一个触发时机，也可以用 "triggers" 列出多个
+    for trig in meta.get("triggers", [meta]):
+        script = trig.get("script", meta.get("script"))
+        path = f'"$HOME/.claude/my-claude-hooks/{name}/{script}"'
+        if script.endswith(".py"):
+            cmd = f"python3 {path}"
+        elif script.endswith(".sh"):
+            cmd = f"bash {path}"
+        else:
+            os.chmod(os.path.join(target, name, script), 0o755)
+            cmd = path
+        if trig.get("args"):
+            cmd += " " + " ".join(trig["args"])
+        entry = {"type": "command", "command": cmd}
+        for key in ("timeout", "statusMessage"):
+            if key in trig:
+                entry[key] = trig[key]
+        group = {"hooks": [entry]}
+        if trig.get("matcher"):
+            group["matcher"] = trig["matcher"]
+        hooks_cfg.setdefault(trig["event"], []).append(group)
     installed.append(f"  ✅ {name}：{meta.get('description', '')}")
 
 if not hooks_cfg:

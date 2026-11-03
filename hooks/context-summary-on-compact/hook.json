@@ -1,0 +1,19 @@
+{
+  "description": "对话压缩前整理已确认的目标、决策、进度、待办与禁止事项成固定摘要，压缩后自动加回工作背景",
+  "triggers": [
+    {
+      "event": "PreCompact",
+      "script": "hook.py",
+      "args": ["save"],
+      "timeout": 240,
+      "statusMessage": "压缩前整理上下文摘要…"
+    },
+    {
+      "event": "SessionStart",
+      "matcher": "compact",
+      "script": "hook.py",
+      "args": ["restore"],
+      "timeout": 15
+    }
+  ]
+}
