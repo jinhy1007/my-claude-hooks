@@ -1,0 +1,8 @@
+{
+  "description": "提交前检查 .env、私钥、凭证、API key 等敏感资料，发现就挡下提交",
+  "event": "PreToolUse",
+  "matcher": "Bash",
+  "script": "hook.py",
+  "timeout": 30,
+  "statusMessage": "检查提交内容是否含敏感资料…"
+}
