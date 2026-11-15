@@ -7,7 +7,6 @@
 | 名称 | 作用 |
 |---|---|
 | `block-secrets-on-commit` | Claude 要 `git commit` 前，检查这次提交的内容。发现 `.env`、私钥、凭证、API key 等敏感资料就挡下，并列出有问题的档案。其他指令不检查。 |
-| `confirm-destructive-commands` | Claude 要执行可能删除档案、丢弃未保存修改、覆盖既有内容等难以复原的终端机指令时，先跳出确认，说明会影响哪些档案。查询类指令直接放行。 |
 | `context-summary-on-compact` | 对话准备压缩前，请 Claude 只整理**已明确确认**的目标、重要决策、目前进度、尚未完成的事项、明确禁止的做法，存成 `~/.claude/context-summaries/<session id>.md`（同一个 session 只更新这一份）。压缩完成后自动加回工作背景。每次整理会额外用到一点用量（约数秒到数十秒）。 |
 
 ## 安装

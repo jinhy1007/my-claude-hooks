@@ -1,8 +1,0 @@
-{
-  "description": "删除档案、丢弃未保存修改、覆盖既有内容等难以复原的指令，先说明影响并等你确认",
-  "event": "PreToolUse",
-  "matcher": "Bash",
-  "script": "hook.py",
-  "timeout": 20,
-  "statusMessage": "检查指令是否难以复原…"
-}
